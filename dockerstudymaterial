@@ -1,0 +1,775 @@
+
+https://www.voxfor.com
+Docker Class 2 :- 
+
+
+
+Container is = server 
+
+Images is  = OS 
+
+
+
+docker images :-  it will show you os in the system (ubuntu , centos, )
+
+docker ps :- it will show you all the running container in the system 
+
+Docker ps -a : -  it list running + stop container 
+
+
+
+docker run hello-world   :-   it always create a new container ( means new server )
+
+docker run hello-world   (image name )   (hellow-world is a image)
+
+Path of images and container  :  cd /var/lib/docker   :-  
+
+
+Docker pull :- use to download image 
+
+Docker run : use to download and create a container 
+
+
+Docker run always check first image is locally available or not if not then it will download the image from docker hub and then run create a container 
+
+
+
+Docker images –no-trunc  it will show you docker image id full 
+
+Docker attach containerid  :- to login into the container 
+
+
+After use exit command it will stop the container 
+
+
+
+Docker exit  :- use to stop the container 
+
+Docket start containerid  :- to start the container 
+
+
+Docket stop containerid  :- to stopt the container 
+
+Docket restart containerid  :- to restart the container 
+
+
+Ctrl + p + q  :- you will logout without stop the container 
+
+To login inside the container use  : docker attach containerid
+
+
+
+
+
+
+Docker Class 3 :- 
+
+
+Docker exec  : to login into container same like docker attach
+
+Docker exec -it containerid bash  : use to login existing container  
+
+Docker exec -it containerid bash   ( docker exec command is use for the login into existing container , -i menas interactive mode , t means terminal bash means shall )
+
+After that if we use exit command 
+
+This will never stop your container still the container is running so this is very good command for use docker exec to login into the container 
+
+Benefits of docker exec command : 
+
+1. Below command is best to login into the container because the benefit of the docker exec after use exit command  container never stop so this is the first benefit of this command.
+
+2. We can use this command while scripting using docker exec command without login into the container we can create a folders and files.
+
+For Example :- 
+
+Docker exec 18 mkdir file1   (18 is a container id)
+
+To check files 
+
+Docker exec 18 ls   ( 18 is container id)
+- How to change the container name 
+
+Docker run -it –name web1 centos:7 bash
+
+Ctrl + p + q
+
+Then check docker ps 
+
+
+
+We can use docker rename command to rename the existing container 
+
+Docker rename oldcontainername newcontainername
+
+Docker ps 
+
+
+
+
+Now i want to create a one container and then we will install some software 
+
+Every time we need to spend 5-10 min for this activity to create a container and install same software in this case what we can do we can create a image from the container and then we will create a new container from the image so we will save our time to install the software.
+
+
+
+Docker commit : - use this command to create a image from the container 
+
+Docker commit -m “ubuntu image - installed with php and git” test2 ubuntu:php
+
+Test2  :- jis container ki image banani he us container ki id ya image name . is the container name or container id 
+
+Ubuntu:php  : name of the image ya konsi name ki image banani he 
+
+M : means massage 
+
+Now using is image i will create a container
+	
+Docker run -it –name test10 ubuntu:php bash 
+
+Container ko kaam diya he tab tak chalta rahe 
+
+Docker run –name t3 ubuntu echo Hello 
+
+Docker ps 
+
+Docket ps -a
+
+Docker run t3
+
+Docker start t3
+
+Docker logs t3    to check logs 
+
+Docker logs t3
+
+
+How ro remove / delete container (container management )
+
+
+Docker rm ( rm is use to remove container )
+
+Docker rm container id ya container name 
+
+Ex 
+
+Docker rm containerid 
+
+You can remove multiple container using adobe command 
+
+Docker rm 123 456 789 
+
+Docker rm -f container id or name  (use to remove the running container forcefully)
+
+
+
+To list the print all the container id only 
+
+Docker ps -a -q
+
+To remove all the container using below command 
+
+docker rm -f `docker ps -a -q`
+
+
+Same command use for the docker images 
+
+Docker rmi imageid / image name ( use to remove docker images )
+
+docker images -q  ( list the image id)
+
+
+To delete all the images use below command 
+
+docker rmi `docker images -q`
+
+
+
+
+
+Lec -  4 
+
+Create a centos7 container
+
+Docker run -it centos:7 bash 
+
+
+
+Docker inspect  (it will will you all the information of container ip ram , hard disk  )
+
+docker inspect d3 (d3 is container id )
+
+
+docker save --output myubuntu.latest.tar 7732c0e37151 (use this command to create a backup of your docker image for future use)
+
+
+After backup now we will remove the image from the system using below command 
+
+docker rmi myubuntu:latest
+
+Now from the backup how we can restore the backup using below command
+
+docker load --input myubuntu.latest.tar
+
+
+Now verify 
+
+docker run -it 7732c0e37151 bash 
+
+
+
+
+Docker working in layer form 
+
+
+
+
+
+Docker tag  ( is used for changes images name )
+
+Docker tag ubuntu:latest ubuntu:best 
+
+
+
+
+
+
+Lec - 5 
+
+How to push docker images in docker hub 
+
+First you need to create a account in docker hub 
+
+I created new account in docker hub 
+
+Email use : kalalpankaj1334@gmail.com
+Username :- devops869
+Password :-  MyName!@12345
+
+
+
+When we push image in dockerhub then we use this format 
+
+
+Imagename: accountname/imagename
+
+Now i have created one container ubuntu 
+
+Using this command 
+
+Docker run -it ubuntu bash 
+
+Installed telnet on that container 
+
+After installation we will create a image of that container 
+
+For image we will use the below command 
+
+Docker commit -m “ telnet installed “ containerid  containername
+
+Now we will push that image to the docker hub 
+
+Docker push ubuntu:telnet 
+
+But in this case we will get the error so when we push the image to the docker hub we always use 
+
+Image name compulsory /image  hona chiye 
+
+For Exam :  Imagename: accountname/imagename
+
+To rename the image name we will use the below command 
+
+docker tag ubuntu:telnet devops869/ubuntu:telnet
+
+
+Then login into docker hub via terminal from the your local system 
+
+Docker login 
+Username 
+Password 
+
+docker push devops869/ubuntu:telnet
+
+Then try to pull this image from below command 
+
+Docker pull devops869/ubuntu:telnet
+
+This will give you the error 
+
+Standard predictive the use pull
+
+For example 
+
+We have create one image with below 
+
+devopstechlab/myphp:5.5
+
+In my case 
+
+devops869/myphp:5.5    (created one image )
+
+
+Rename latest then push the dockerhub 
+
+Then for first time we will create a 2 image with one is latest and second is php:5.5
+
+docker tag devops869/ubuntu:telnet devops869/myphp:5.5
+
+Second image of same image but rename the image name 
+
+docker tag devops869/ubuntu:telnet devops869/myphp
+
+Then push the image myphp
+
+
+docker push devops869/myphp
+
+It means whenever we push image we need to push 2 times 
+first we need to add latest tag then second with version it means latest will always override the images and also we have old image old image keep in the backup purpose.
+
+
+Practice about above this 
+
+Now How we can create a httpd container 
+
+Docker run -it httpd bash 
+
+Then use to check container ip use below command 
+
+Docker inspect 4e ( where 4e is the container id )
+
+To check the website use below command with container ip 
+
+curl http://172.17.0.5
+
+Jaha koi service vaala container install kar rahe ho dont use -it 
+
+Example 
+
+Docker run httpd
+
+docker run -d --name web1 httpd (running in background )
+
+
+Now we will run website from host system ip 
+
+Docker run -d –name web1 httpd  (it opens websites on container IP Address only, not host system IPAddress)
+
+
+
+Docker run -d -p 80 –name web2 httpd
+
+-p 80: Container Port 80 map to host system random port 
+
+Docker run -d -p 80:80 –name web2 httpd (hostsystemport:containerport)
+
+docker run -d -p 81:80 --name web5 httpd (now i have changes hostsystemport)
+
+
+
+
+
+Lec -6 
+
+How to create a docker file 
+
+Docker build ( Create docker image using docker file )
+
+To create a docker file first you will create a container and then install all the software which we required after that all the steps write in the docker file 
+
+Now we will create a image using a docker file 
+
+After that we will create a image using docker file,
+
+
+Practical :- 
+
+Dockerfile 
+
+FROM centos 
+LABEL maintainer=”kalalpankaj1334@gmail.com”
+WORKDIR  /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install telnet -y 
+WORKDIR /root
+RUN mkdir hello 
+
+
+
+Now we will create a Dockerfile file under docker directory
+
+Mkdir docker         
+Vim Dockerfile 
+
+Now paste the steps which we have done in manually 
+
+
+Run below command 
+
+docker run -it mycentos:v3 bash  (this command is use to create a container from docker image file)
+
+Then we will check that container telnet command and hello directory is present or not 
+
+After that if you want to change add or install some package then you can directly add that docker file and then create a new image 
+
+In that case we don’t require image in the system we need only docker file in system.
+
+- using docker image we can save the space disk. We don’t require to save all the 20 images of clients, we need one docker file and from that file we can create a container.
+
+- This below tags are called a directory 
+
+FROM : From which you want to create a container /image name 
+RUN , is called directive
+WORKDIR use for use fire command on which location 
+LABEL :- it is use for the information
+USER : pankaj (defult konse user me login karna he vo )
+
+
+Now reqvirnment is whenever is create a container container login with normal user not root user 
+
+
+          Use below file 
+
+FROM centos 
+LABEL maintainer=”kalalpankaj1334@gmail.com”
+WORKDIR  /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN mkdir wow
+RUN adduser pankaj
+RUN yum install telnet -y 
+RUN yum install wget -y
+WORKDIR /root
+RUN mkdir hello
+USER pankaj 
+
+         
+
+
+
+          Use below command to login in directly in root 
+
+docker exec -it -u root 70f bash 
+
+
+
+
+If you have changed your docker file then how we can use using below command
+
+First copy your file 
+
+Cp dockerfile abcd 
+Ls 
+ 
+
+docker build -t centos:v7 -f abcd .
+
+-f use for file 
+Abcd is new file 
+. dor is current directory 
+
+
+If you want to start a service then don’t use RUN command 
+
+Like httpd service 
+
+
+RUN :- execute at image creation time 
+CMD : - execute at container  creation time 
+
+Lec : 7 
+
+
+To understand the CMD purpose ➖
+We have created a one docker file and below is the content of the file 
+
+Using this we will see the CMD purpose 
+
+FROM centos
+LABEL maintainer=”kalalpankaj1334@gmail.com”
+WORKDIR  /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install wget -y
+CMD ["sh", "-c", "yum install telnet-y"]
+
+
+To create a build use below command 
+docker build -t cmd:v1 .
+
+Isse sirf wget install hoga
+
+Telnet cmd se install hoga during container creation 
+
+Now we will check wget is installed in that image but telnet is not installed 
+
+Now using this image we will create a container 
+
+docker run cmd:v1
+
+
+
+
+
+
+RUN : 
+
+
+RUN is for to run the command or execute the command 
+Execute at image creation time 
+When you will create a image that time execute 
+
+
+CMD :- 
+
+Execute at container creation time 
+And container will run when you will run a container 
+CMD can we override during container creation time 
+If you provide multiple CMD in docker file, only last one will be executed.
+
+
+ENTRYPOINT ➖
+
+Execute at container creation time 
+And container will run when you will run a container 
+ENTRYPOINT can not be overwrite during container creation time  
+If you provide multiple CMD in docker file, only last one will be executed.
+
+
+
+
+
+
+Docker run cmd:v1
+
+docker run cmd:v1 echo Devops Techlab
+
+docker run -it cmd:v1 bash
+
+Now check wget and telnet 
+Wget is available but telnet is not present so when we use CMD it will override while running / creating the container .
+
+
+FROM centos 
+LABEL maintainer=”kalalpankaj1334@gmail.com”
+WORKDIR  /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install wget -y
+CMD ["sh", "-c", "yum install telnet -y"]
+CMD ["sh", "-c", "echo 'Hello World'"]
+CMD ["sh", "-c", "echo 'Devops Techlab'"]
+
+
+Then run below command 
+
+docker build -t cmd:v2 .
+
+
+- MultipleInstructionsDisallowed: Multiple CMD instructions should not be used in the same stage because only the last one will be used (line 9)
+
+ docker run cmd:v2 
+
+It means if you define multiple CMD in docker file then last one will execute.
+
+
+docker run cmd:v2 echo wow
+
+Now print wow  it means it will override the last cmd contain 
+
+docker run -it cmd:v2 bash
+
+Last cmd override 
+
+
+Now we will check CMD and ENTRYPOINT 
+
+ROM centos
+LABEL maintainer=”kalalpankaj1334@gmail.com”
+WORKDIR  /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install wget -y
+ENTRYPOINT ["sh", "-c", "yum install telnet -y"]
+ENTRYPOINT ["sh", "-c", "echo 'Hello World'"]
+ENTRYPOINT ["sh", "-c", "echo 'Devops Techlab'"]
+
+
+
+docker build -t entry:v2 .
+
+docker run entry:v2 echo wow
+
+It can not be override during container creation time override the last ENTRYPOINT.
+
+Docker run -it entry:v1 bash
+
+
+Now we will take good example to understand better 
+
+Yum install httpd -y 
+Systemctl start httpd 
+/var/www/html 
+
+
+First we will take a backup of docker file 
+
+cp Dockerfile Dockerfile1
+
+FROM centos 
+LABEL maintainer=”kalalpankaj1334@gmail.com”
+WORKDIR  /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+RUN yum update -y
+RUN yum install wget -y
+RUN yum install httpd -y 
+CMD ["httpd", "-D", "FOREGROUND"]
+
+
+
+First we will install default httpd 
+
+docker run httpd
+Httpd service started in background service start 
+
+Same way now i will start my httpd container 
+
+Docker run myhttpd:v1 
+Service start then 
+
+Docker ps 
+
+To check ip docker inspects c9 | grep IPadd
+
+Cmd and Entrypoint define karega container me kya running rakna he 
+
+Jese hi task khatam vo container stop ho jaayega 
+
+Koi bhi service start kar rahe ho tho vo cmd me define karni he 
+
+
+
+
+Container ka 80 port host ke  randomly port ke saath  bind hoga 
+
+curl http://172.31.6.199:32770
+
+docker run -d -p 80 myhttpd:v1
+
+Docker ps 
+
+
+COPY :- 
+ADD :- 
+Copy and add both are similar when we need to copy data from host system to container 
+
+It will be copy your data when container is run 
+
+    Example 
+
+
+First you will add some data in your 
+
+What is the difference between CMD and Entrypoint 
+
+What we define in cmd and entrypoint 
+And :- Which service we need to start we need to define this both 
+Jese service task end huaa container band ho jaayega 
+
+Jo aapne cmd and entrypoint me define kiya huaa he vo jab tak chalega tab tak aapka container running rahega and if the task is completed then container band ho jaayega.
+
+
+Q2 . If i run multiple run then what happened 
+Ans :- All runs and run 
+
+Q.3 And run multiple cmd and entrypoint define then 
+Ans : last one execute 
+
+In cmd during the container creatine time we can override but entrypoint we cant override during container creation time .
+
+
+We use 3 more directive ADD, COPY, EXPOSE
+
+
+
+
+
+
+
+
+
+LEC - 8
+
+
+Docker volume 
+
+Now my requirement is if my container or image is deleted accidentally then still my container data is backup or available in the system.
+
+And from the backup we can create a container 
+
+This is my goal now how its happen lets see 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
